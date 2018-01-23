@@ -31,8 +31,46 @@ def put_word(state, line):
 
 
 def print_state(state, current=[]):
-    for l in put_words(state, current):
-        print(''.join(l))
+    state = put_words(state, current)
+    height = len(state)
+    width = len(state[0])
+
+    # start drawing
+    # first row
+    for col in range(width):
+        if col == 0:
+            print('┌', end='')
+        else:
+            print('┬', end='')
+        print('─', end='')
+    print('┐')
+
+    for row in range(height):
+        for col in range(width):
+            if state[row][col] == '#':
+                print('│ ', end='')
+            else:
+                print('│\033[1;37m{}\033[0m'
+                      .format(state[row][col].upper()), end='')
+        print('│')
+        if row == height - 1:
+            break
+        for col in range(width):
+            if col == 0:
+                print('├', end='')
+            else:
+                print('┼', end='')
+            print('─', end='')
+        print('┤')
+
+    # last line
+    for col in range(width):
+        if col == 0:
+            print('└', end='')
+        else:
+            print('┴', end='')
+        print('─', end='')
+    print('┘')
 
 
 def load_board_from_file(filename):
@@ -139,9 +177,9 @@ def solve(state, slots, words, current=[]):
 
 def solve_file(filename):
     board = load_board_from_file(filename)
-    print_state(board.layout)
+    # print_state(board.layout)
     board.words.sort(key=lambda x: -len(x))
-    print(board.words)
+    # print(board.words)
 
     slots = detect_slot(board.layout, '-') + detect_slot(board.layout, '|')
     slots.sort(key=lambda x: -x[3])
@@ -152,6 +190,7 @@ def solve_file(filename):
         print_state(state, current)
     except Exception as e:
         print('NO SOLUTION')
+        assert False
 
 
 if __name__ == "__main__":
