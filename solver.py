@@ -32,6 +32,12 @@ def put_word(state, line):
 
 def print_state(state, current=[]):
     state = put_words(state, current)
+    for line in state:
+        print(''.join(line))
+
+
+def pretty_print_state(state, current=[]):
+    state = put_words(state, current)
     height = len(state)
     width = len(state[0])
 
@@ -190,7 +196,7 @@ def solve_file(filename):
         print_state(state, current)
     except Exception as e:
         print('NO SOLUTION')
-        assert False
+        # assert False
 
 
 if __name__ == "__main__":
